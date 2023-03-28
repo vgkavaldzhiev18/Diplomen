@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="~{./fragments/head.html}">
+
+</head>
+<body>
+<th:block th:insert="~{./fragments/header.html}" >
+
+</th:block>
+
+<main >
+    <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="57">
+    <header class="text-center text-white d-flex masthead" style="background-image:url('images/pizza.jpg');">
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h1 class="text-uppercase"><strong>Пици направени по твоя вкус</strong></h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="col-lg-8 mx-auto">
+                <p class="text-faded mb-5">Създай пицата, която искаш лесно и бързо!</p><a class="btn btn-primary btn-xl" role="button"
+                                                                                           th:href="@{/order}">Започни сега</a>
+            </div>
+        </div>
+    </header>
+    <section id="about" class="bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col offset-lg-8 text-center mx-auto">
+                    <h2 class="text-white section-heading">Имаме всичко, което искаш!</h2>
+                    <hr class="light my-4">
+                    <p class="text-faded mb-4">Предоставяме широк набор от опции, за да създадете пицата, която обичате!</p>
+                    <i style="font-size: 50px; color: white" class="fa-solid fa-pizza-slice"></i>                </div>
+            </div>
+        </div>
+    </section>
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Защо нас?</h2>
+                    <hr class="my-4">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 text-center">
+                    <div class="mx-auto service-box mt-5"><i class="fa fa-diamond fa-4x text-primary mb-3 sr-icons" data-aos="zoom-in" data-aos-duration="200" data-aos-once="true"></i>
+                        <h3 class="mb-3">Бърза и лесна доставка</h3>
+                        <p class="text-muted mb-0">Доставките ни са възможно най-лесни и бързи, за да задоволим нуждите ви</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 text-center">
+                    <div class="mx-auto service-box mt-5"><i class="fa fa-paper-plane fa-4x text-primary mb-3 sr-icons" data-aos="zoom-in" data-aos-duration="200" data-aos-delay="200" data-aos-once="true"></i>
+                        <h3 class="mb-3">Избор от много опции</h3>
+                        <p class="text-muted mb-0">Можете да избирате от десетки опции за създаване на перфектната пица</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4 text-center">
+                    <div class="mx-auto service-box mt-5"><i class="fa fa-heart fa-4x text-primary mb-3 sr-icons" data-aos="fade" data-aos-duration="200" data-aos-delay="600" data-aos-once="true"></i>
+                        <h3 class="mb-3">Направено с любов</h3>
+                        <p class="text-muted mb-0">:)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    </body>
+</main>
+
+
+
+<!-- Footer -->
+<th:block th:insert="~{./fragments/footer.html}" >
+
+</th:block>
+<!-- Footer -->
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="~{./fragments/head.html}">
+
+</head>
+  <body>
+  <th:block th:insert="~{./fragments/header.html}" >
+
+  </th:block>
+
+    <main>
+      <div style="margin: 0 auto; width: 50%" th:if="${orderSuccess}" class=" alert alert-success" role="alert">
+        <h4 class="alert-heading">Пицата е създадена успешно!</h4>
+        <p>Пицата, която създадохте е запазена.</p>
+        <hr>
+        <p class="mb-0">Отидете в количката, за да я поръчате</p>
+        <button style="margin:0 auto; width: 20%;display: inherit;background-color: #f05f40" type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">Затвори</span>
+        </button>
+      </div>
+      <div >
+        <div style="justify-content: center">
+
+          <div style="margin:0 auto; width: 60%">
+            <form id="msform" th:object="${order}" th:action = "@{/order}" th:method="post">
+              <!-- progressbar -->
+              <ul id="progressbar">
+                <li class="active">Personal Details</li>
+                <li>Social Profiles</li>
+                <li>Account Setup</li>
+                <li>Account Setup</li>
+              </ul>
+              <!-- fieldsets -->
+              <fieldset>
+                <h2 class="fs-title">Създай твоята пица сега</h2>
+                <h3 class="fs-subtitle">Изберете тесто</h3>
+                <select th:field="*{doughId}" class="form-select" aria-label="Default select example">
+                  <option  th:each="dough:${doughs}" th:value="${dough.id}" th:text="${dough.toString()}"></option>
+                </select>
+                <h3 style="margin-top: 10px" class="fs-subtitle">Изберете размер</h3>
+                <select th:field="*{sizeId}" class="form-select" aria-label="Default select example">
+                  <option  th:each="size:${sizes}" th:value="${size.id}" th:text="${size.toString()}" ></option>
+                </select>
+
+                <h3 style="margin-top: 10px" class="fs-subtitle">Брой на пиците</h3>
+                <input id="quantity" min="1"  th:field="*{quantity}" type="number"  placeholder="Брой на пици"/>
+
+                <input type="button" name="next" class="next action-button" value="Напред"/>
+
+              </fieldset>
+              <fieldset>
+                <h2 class="fs-title">Създай твоята пица сега</h2>
+                <h3 class="fs-subtitle">Изберете добавки</h3>
+               <div>
+                 <div class="form-check form-check-inline" th:each="topping:${toppings}" >
+                   <label class="form-check-label"  th:text="${topping.toString()}"></label>
+                   <input
+                          class="form-check-input"
+                          th:value = "${topping.id}"  th:field="*{toppingsIds}" type="checkbox"  >
+                 </div>
+
+               </div>
+                <input type="button" name="previous" class="previous action-button-previous" value="Назад"/>
+                <input type="button" name="next" class="next action-button" value="Напред"/>
+              </fieldset>
+              <fieldset>
+                <h2 class="fs-title">Създай твоята пица сега</h2>
+                <h3 class="fs-subtitle">Изберете сос</h3>
+                <div>
+                  <div th:each="sauce:${sauces}" class="form-check form-check-inline">
+                    <label class="form-check-label"  th:text="${sauce.toString()}"></label>
+                    <input th:value = "${sauce.id}"  th:field="*{saucesIds}" class="form-check-input" type="checkbox">
+                  </div>
+
+                </div>
+                <input type="button" name="previous" class="previous action-button-previous" value="Назад"/>
+                <input type="button" name="next" class="next action-button" value="Напред"/>
+              </fieldset>
+              <fieldset>
+                <h2 class="fs-title">Създай твоята пица сега</h2>
+                <h3 class="fs-subtitle">Въведете данни за доставка</h3>
+                <input required  th:field="*{delivery.city}" type="text" name="city" placeholder="City"/>
+                <input required th:field="*{delivery.address}" type="text" name="address" placeholder="Address"/>
+                <input required th:field="*{delivery.phonenumber}" type="text" name="phonenumber" placeholder="Phonenumber"/>
+
+                <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                <input style="padding-right: 10px" type="submit" name="submit" class="submit action-button" value="Поръчай"/>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  <script >
+
+    //jQuery time
+    var current_fs, next_fs, previous_fs; //fieldsets
+    var left, opacity, scale; //fieldset properties which we will animate
+    var animating; //flag to prevent quick multi-click glitches
+
+    $(".next").click(function(){
+      const quantity = document.getElementById("quantity")
+      if(quantity.validity.rangeUnderflow){
+        quantity.setCustomValidity("Трябва да бъде по-голямо от 0")
+        quantity.reportValidity()
+        return;
+      }
+      if(animating) return false;
+      animating = true;
+
+      current_fs = $(this).parent();
+      next_fs = $(this).parent().next();
+
+      //activate next step on progressbar using the index of next_fs
+      $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+      //show the next fieldset
+      next_fs.show();
+      //hide the current fieldset with style
+      current_fs.animate({opacity: 0}, {
+        step: function(now, mx) {
+          //as the opacity of current_fs reduces to 0 - stored in "now"
+          //1. scale current_fs down to 80%
+          scale = 1 - (1 - now) * 0.2;
+          //2. bring next_fs from the right(50%)
+          left = (now * 50)+"%";
+          //3. increase opacity of next_fs to 1 as it moves in
+          opacity = 1 - now;
+          current_fs.css({
+            'transform': 'scale('+scale+')',
+            'position': 'absolute'
+          });
+          next_fs.css({'left': left, 'opacity': opacity});
+        },
+        duration: 800,
+        complete: function(){
+          current_fs.hide();
+          animating = false;
+        },
+        //this comes from the custom easing plugin
+        easing: 'easeInOutBack'
+      });
+    });
+
+    $(".previous").click(function(){
+      if(animating) return false;
+      animating = true;
+
+      current_fs = $(this).parent();
+      previous_fs = $(this).parent().prev();
+
+      //de-activate current step on progressbar
+      $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+      //show the previous fieldset
+      previous_fs.show();
+      //hide the current fieldset with style
+      current_fs.animate({opacity: 0}, {
+        step: function(now, mx) {
+          //as the opacity of current_fs reduces to 0 - stored in "now"
+          //1. scale previous_fs from 80% to 100%
+          scale = 0.8 + (1 - now) * 0.2;
+          //2. take current_fs to the right(50%) - from 0%
+          left = ((1-now) * 50)+"%";
+          //3. increase opacity of previous_fs to 1 as it moves in
+          opacity = 1 - now;
+          current_fs.css({'left': left});
+          previous_fs.css({'transform': 'scale('+scale+')', 'opacity': opacity});
+        },
+        duration: 800,
+        complete: function(){
+          current_fs.hide();
+          animating = false;
+        },
+        //this comes from the custom easing plugin
+        easing: 'easeInOutBack'
+      });
+    });
+
+    // $(".submit").click(function(){
+    //   $('.alert').show()
+    // })
+  </script>
+
+
+    <!-- Footer -->
+  <th:block  th:insert="~{./fragments/footer.html}" >
+
+  </th:block>
+    <!-- Footer -->
+  </body>
+</html>

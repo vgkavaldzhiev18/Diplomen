@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="~{./fragments/head.html}">
+
+</head>
+<body>
+<th:block th:insert="~{./fragments/header.html}">
+
+</th:block>
+
+<main>
+    <section class="h-100 h-custom" style="background-color: #eee;">
+        <div style="margin: 0 auto; width: 50%" th:if="${orderSuccess}" class=" alert alert-success" role="alert">
+            <h4 class="alert-heading">Поръчката е направена успешно!</h4>
+            <hr>
+            <p>Очаквайте доставка възможно най-скоро!</p>
+            <button style="margin:0 auto; width: 20%;display: inherit;background-color: #f05f40" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">Затвори</span>
+            </button>
+        </div>
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <div class="row">
+
+                                <div class="col-lg-7">
+                                    <h5 class="mb-3"><a th:href="@{/order}" class="text-body"><i
+                                            class="fas fa-long-arrow-alt-left me-2"></i>Продължи пазаруване</a></h5>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div>
+                                            <p class="mb-1">Количка</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-3" th:each="order:${orders}">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <div class="ms-3">
+                                                        <h5 th:text="|${order.pizza.getDough().name}
+                                                         ${order.pizza.getSize().size} cm|"></h5>
+<!--                                                        <p class="small mb-0">256GB, Navy Blue</p>-->
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <div style="width: 50px;">
+                                                        <h5 class="fw-normal mb-0" th:text="${order.quantity}"></h5>
+                                                    </div>
+                                                    <div style="width: 80px;">
+                                                        <h5 class="mb-0" th:text="|${order.price}лв.|"></h5>
+                                                    </div>
+                                                    <a th:href="@{/order/cart/delete/{id}(id=${order.getId()})}" style="color: #cecece;"><i
+                                                            class="fas fa-trash-alt"></i></a>
+                                                </div>
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" th:text="|${order.pizza.dough.name} - ${order.pizza.dough.price}лв.|"></li>
+                                                <li class="list-group-item" th:text="|${order.pizza.size.size}см. - ${order.pizza.size.price}лв.|"></li>
+                                            </ul>
+
+                                            <hr>
+                                            <h5>Добавки</h5>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" th:text="${topping}" th:each="topping:${order.pizza.getToppings()}"></li>
+                                            </ul>
+                                            <hr>
+                                            <h5>Сос</h5>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" th:text="${sauce}" th:each="sauce:${order.pizza.getSauce()}"></li>
+                                            </ul>
+                                            <hr>
+                                            <h5>Адрес на доставка</h5>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item" th:text="|Град - ${order.city}|"></li>
+                                                <li class="list-group-item" th:text="|Адрес - ${order.address}|"></li>
+                                                <li class="list-group-item" th:text="|Телефонен номер - ${order.phonenumber}|"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-5">
+
+                                    <div class="card bg-primary text-white rounded-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <h5 class="mb-0">Детайли за поръчка</h5>
+
+                                            </div>
+                                            <hr class="my-4">
+                                            <div class="d-flex justify-content-between mb-4">
+                                                <p class="mb-2">Крайна цена:</p>
+                                                <p class="mb-2" th:text="|${total}лв.|"></p>
+                                            </div>
+
+                                            <form method="post" th:action="@{/order/cart/{id}(id=${#authentication.getName()})}" th:if="${total != 0}">
+                                                <input  type="submit"   class="btn btn-success btn-block btn-lg">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span th:text="|${total}лв.|"></span>
+                                                        <span>Поръчай <i
+                                                                class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                                                    </div>
+                                                </input>
+                                            </form>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<th:block th:insert="~{./fragments/footer.html}">
+
+</th:block>
+</body>
+</html>
