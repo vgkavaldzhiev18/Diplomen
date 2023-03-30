@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table
+@Table(name = "Dough")
 @Entity
 @Getter
 @Setter

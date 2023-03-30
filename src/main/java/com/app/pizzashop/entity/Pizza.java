@@ -19,14 +19,14 @@ public class Pizza extends BaseEntity {
     private Dough dough;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "pizza_sauce",
+    @JoinTable(name = "PizzaSauce",
             joinColumns = @JoinColumn(name = "pizza_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "sauce_id", referencedColumnName = "id")
     )
     private List<Sauce> sauce;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "pizza_topping",
+    @JoinTable(name = "PizzaTopping",
             joinColumns = @JoinColumn(name = "pizza_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "topping_id", referencedColumnName = "id")
     )
