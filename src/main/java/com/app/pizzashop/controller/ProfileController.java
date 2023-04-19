@@ -23,7 +23,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    private String getProfile(@PathVariable String id, Model model) {
+    public String getProfile(@PathVariable String id, Model model) {
         if(!model.containsAttribute("user")){
             AppUser byAuthId = service.findByAuthId(id);
             model.addAttribute("user", new ProfileEdit(byAuthId.getAuthIdentifier(), byAuthId.getFirstName(),
